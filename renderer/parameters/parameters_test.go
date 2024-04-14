@@ -388,3 +388,11 @@ func MatchesPatternWithValueHavingEqualSign(t *testing.T) {
  assert.Equal(t, "key", groups["name"])
  assert.Equal(t, "value=with=equals", groups["value"])
 }
+
+func TestVarArgRegexp(t *testing.T) {
+  t.Run("MatchesValidPattern", MatchesValidPattern)
+  t.Run("MatchesPatternWithSpaces", MatchesPatternWithSpaces)
+  t.Run("DoesNotMatchInvalidPattern", DoesNotMatchInvalidPattern)
+  t.Run("DoesNotMatchEmptyString", DoesNotMatchEmptyString)
+  t.Run("MatchesPatternWithValueHavingEqualSign", MatchesPatternWithValueHavingEqualSign)
+}
