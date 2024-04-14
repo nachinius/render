@@ -347,3 +347,44 @@ func TestAppendNested(t *testing.T) {
 		t.Run(fmt.Sprintf("[%d] %s", i, tt.name), func(t *testing.T) { tt.f(tt) })
 	}
 }
+
+func MatchesValidPattern(t *testing.T) {
+	input := "key=value"
+	groups, ok := VarArgRegexp.MatchGroups(input)
+
+	assert.True(t, ok)
+	assert.Equal(t, "key", groups["name"])
+	assert.Equal(t, "value", groups["value"])
+}
+
+func MatchesPatternWithSpaces(t *testing.T) {
+	input := "key=value with spaces"
+	groups, ok := VarArgRegexp.MatchGroups(input)
+
+	assert.True(t, ok)
+	assert.Equal(t, "key", groups["name"])
+	assert.Equal(t, "value with spaces", groups["value"])
+}
+
+func DoesNotMatchInvalidPattern(t *testing.T) {
+	input := "keyvalue"
+	_, ok := VarArgRegexp.MatchGroups(input)
+
+	assert.False(t, ok)
+}
+
+func DoesNotMatchEmptyString(t *testing.T) {
+	input := ""
+	_, ok := VarArgRegexp.MatchGroups(input)
+
+	assert.False(t, ok)
+}
+
+func MatchesPatternWithValueHavingEqualSign(t *testing.T) {
+ input := "key=value=with=equals"
+ groups, ok := VarArgRegexp.MatchGroups(input)
+
+ assert.True(t, ok)
+ assert.Equal(t, "key", groups["name"])
+ assert.Equal(t, "value=with=equals", groups["value"])
+}
